@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absen Penguji BBPK APDN IV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #009688; /* Teal yang lebih dalam */
+            --primary-gradient: linear-gradient(135deg, #009688 0%, #00796b 100%);
+            --secondary-bg: #e0f2f1; /* Latar belakang teal sangat muda */
+            --text-dark: #263238;
+            --text-muted: #546e7a;
+            --border-light: #cfd8dc;
+            --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, var(--secondary-bg), #ffffff);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .form-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 650px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* --- Header --- */
+        .form-header {
+            background: var(--primary-gradient);
+            text-align: center;
+            padding: 40px 40px 30px;
+            color: white;
+        }
+
+        .form-header h2 {
+            margin: 0 0 10px;
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        /* --- Body & Inputs --- */
+        .form-body {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .form-group input[type="text"],
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            background-color: #f9fafb;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(0, 150, 136, 0.1);
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            display: block;
+            font-style: italic;
+        }
+
+        /* --- Tanda Tangan --- */
+        .signature-wrapper {
+             border: 2px dashed var(--border-light);
+             border-radius: 10px;
+             padding: 5px;
+             background-color: #f9fafb;
+             transition: border-color 0.3s;
+        }
+        
+        .signature-wrapper:hover {
+             border-color: var(--primary-color);
+        }
+
+        .signature-container {
+            border-radius: 6px;
+            background-color: #ffffff;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        canvas {
+            width: 100%;
+            height: 180px;
+            cursor: crosshair;
+            display: block;
+            background-image: radial-gradient(#cfd8dc 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .clear-btn {
+            background: #fff;
+            border: none;
+            color: #e74c3c;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 12px;
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .clear-btn:hover {
+            background: #fceceb;
+        }
+
+        /* --- Tombol Submit --- */
+        .form-footer {
+            text-align: center;
+            padding: 0 40px 30px;
+        }
+
+        .submit-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.3);
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 150, 136, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* --- Footer Gelap (Diperbarui Jarak Ikonnya) --- */
+        .form-footer-dark {
+            background-color: #263238; 
+            color: #b0bec5; 
+            padding: 25px 30px;
+            font-size: 12px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .warning-text {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            /* PERBAIKAN DI SINI: Mengurangi gap dari 10px menjadi 5px */
+            gap: 5px; 
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .info-icon {
+            flex-shrink: 0;
+            margin-top: 1px;
+            color: #90a4ae;
+        }
+
+        .warning-text a {
+            color: #ffffff;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .warning-text a:hover {
+            color: var(--primary-color);
+        }
+
+        .powered-by {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 13px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+        }
+
+        .powered-by strong {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-left: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Responsif */
+        @media (max-width: 480px) {
+            body { padding: 20px 10px; }
+            .form-header, .form-body, .form-footer { padding: 30px 20px; }
+            .form-footer-dark { padding: 20px 15px; }
+            .form-header h2 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <div class="form-header">
+        <h2>Absen Penguji BBPK-APDN IV</h2>
+        <p>Silakan lengkapi data kehadiran Anda di bawah ini</p>
+    </div>
+
+    <form id="absenForm" class="form-body">
+        <div class="form-group">
+            <label for="nama">Nama Penguji</label>
+            <input type="text" id="nama" placeholder="Contoh: Dr. Budi Santoso, M.Pd" required>
+            <span class="help-text">Lengkap beserta gelar akademik</span>
+        </div>
+
+        <div class="form-group">
+            <label for="nip">NIP (Nomor Induk Pegawai)</label>
+            <input type="text" id="nip" placeholder="Masukkan 18 digit NIP" required>
+        </div>
+
+        <div class="form-group">
+            <label for="jabatan">Jabatan Saat Ini</label>
+            <input type="text" id="jabatan" placeholder="Contoh: Widyaiswara Ahli Madya" required>
+        </div>
+
+        <div class="form-group">
+            <label for="jenis_pelatihan">Jenis Pelatihan</label>
+            <select id="jenis_pelatihan" required>
+                <option value="" disabled selected>— Pilih Jenis Pelatihan —</option>
+                <option value="Pelatihan Dasar CPNS">Pelatihan Dasar CPNS</option>
+                <option value="Pelatihan Kepemimpinan Pengawas">Pelatihan Kepemimpinan Pengawas</option>
+                <option value="PPelatihan Kepemimpinan Administrator">Pelatihan Kepemimpinan Administrator</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="jenis_ujian">Jenis Ujian/Kegiatan</label>
+            <select id="jenis_ujian" required>
+                <option value="" disabled selected>— Pilih Jenis Ujian —</option>
+                <option value="Ujian Rancangan">Ujian Rancangan</option>
+                <option value="Ujian Akhir">Ujian Akhir</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="angkatan">Angkatan</label>
+            <input type="text" id="angkatan" placeholder="Contoh: Angkatan V Tahun 2026" required>
+        </div>
+
+        <div class="form-group">
+            <label for="kelompok">Kelompok Peserta</label>
+            <select id="kelompok" required>
+                <option value="" disabled selected>— Pilih Kelompok —</option>
+                <option value="Kelompok 1">Kelompok 1</option>
+                <option value="Kelompok 2">Kelompok 2</option>
+                <option value="Kelompok 3">Kelompok 3</option>
+                <option value="Kelompok 4">Kelompok 4</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Tanda Tangan Digital</label>
+            <div class="signature-wrapper">
+                <div class="signature-container">
+                    <canvas id="signature-pad"></canvas>
+                    <button type="button" class="clear-btn" id="clear-signature">Hapus & Ulangi Tanda Tangan</button>
+                </div>
+            </div>
+             <span class="help-text">Gunakan mouse atau jari (pada layar sentuh) untuk tanda tangan di area di atas.</span>
+        </div>
+
+        <div class="form-footer">
+            <button type="submit" class="submit-btn">Kirim Absensi</button>
+        </div>
+    </form>
+
+    <div class="form-footer-dark">
+        <div class="warning-text">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="info-icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span>
+                Mohon untuk tidak mengirimkan informasi rahasia seperti kata sandi, PIN, atau data perbankan Anda. 
+                <a href="#">Laporkan Kendala</a>
+            </span>
+        </div>
+        <div class="powered-by">
+            Powered by <strong>BBPK-APDN IV</strong>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('signature-pad');
+    const ctx = canvas.getContext('2d');
+    const clearBtn = document.getElementById('clear-signature');
+    let isDrawing = false;
+
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        ctx.scale(ratio, ratio);
+        
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 3; 
+        ctx.strokeStyle = '#1a237e'; 
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 100);
+
+    // Mouse Events
+    canvas.addEventListener('mousedown', (e) => {
+        isDrawing = true;
+        ctx.beginPath();
+        ctx.moveTo(e.offsetX, e.offsetY);
+    });
+    canvas.addEventListener('mousemove', (e) => {
+        if (isDrawing) {
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+        }
+    });
+    canvas.addEventListener('mouseup', () => { isDrawing = false; ctx.beginPath(); });
+    canvas.addEventListener('mouseout', () => { isDrawing = false; ctx.beginPath(); });
+
+    // Touch Events
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        isDrawing = true;
+        ctx.beginPath();
+        ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+    });
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (isDrawing) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+            ctx.stroke();
+        }
+    });
+    canvas.addEventListener('touchend', () => { isDrawing = false; ctx.beginPath(); });
+
+    // Clear Button
+    clearBtn.addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    // Submit Handling Terhubung ke Google Sheets
+    document.getElementById('absenForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Mencegah form memuat ulang halaman
+
+        if(isCanvasBlank(canvas)){
+            alert('Mohon isi tanda tangan terlebih dahulu.');
+            return;
+        } 
+
+        // Ubah tampilan tombol saat proses loading
+        const submitBtn = document.querySelector('.submit-btn');
+        const originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = 'Mengirim Data...';
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
+
+        // 1. Siapkan data dari form
+        const formData = {
+            nama: document.getElementById('nama').value,
+            nip: document.getElementById('nip').value,
+            jabatan: document.getElementById('jabatan').value,
+            jenis_pelatihan: document.getElementById('jenis_pelatihan').value,
+            jenis_ujian: document.getElementById('jenis_ujian').value,
+            angkatan: document.getElementById('angkatan').value,
+            kelompok: document.getElementById('kelompok').value,
+            tanda_tangan: canvas.toDataURL() // Ini mengambil gambar kanvas menjadi teks Base64
+        };
+
+        // 2. MASUKKAN URL WEB APP DARI GOOGLE APPS SCRIPT DI SINI
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwbfUOf5UEvju7SmVgWJ2_mY5sNSSVja8IllzNHEm9utftZonU9oE6uFzieyQ02LNsA/exec';
+
+        // 3. Kirim data menggunakan Fetch API
+        fetch(scriptURL, {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: {
+                // Gunakan text/plain untuk menghindari error CORS di Google Apps Script
+                'Content-Type': 'text/plain;charset=utf-8', 
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === 'success') {
+                alert('Data Kehadiran & Tanda Tangan Berhasil Dikirim!');
+                // Reset form dan kanvas jika sukses
+                document.getElementById('absenForm').reset();
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            } else {
+                alert('Gagal mengirim data: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan jaringan saat mengirim data.');
+        })
+        .finally(() => {
+            // Kembalikan tombol ke keadaan semula
+            submitBtn.innerText = originalBtnText;
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+        });
+    });
+
+    function isCanvasBlank(canvas) {
+        // ... (fungsi isCanvasBlank tetap sama seperti sebelumnya) ...
+        const context = canvas.getContext('2d');
+        const pixelBuffer = new Uint32Array(
+            context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+        );
+        return !pixelBuffer.some(color => color !== 0);
+    }
+</script>
+
+</body>
+</html>
